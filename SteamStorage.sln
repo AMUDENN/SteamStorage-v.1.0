@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SteamStorage", "SteamStorage\SteamStorage.csproj", "{75206C49-55B2-407C-8E75-F7F5776115DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "Parser\Parser.csproj", "{03BA84A4-AB71-4C88-9517-10D7F9ABAC76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75206C49-55B2-407C-8E75-F7F5776115DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75206C49-55B2-407C-8E75-F7F5776115DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75206C49-55B2-407C-8E75-F7F5776115DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75206C49-55B2-407C-8E75-F7F5776115DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03BA84A4-AB71-4C88-9517-10D7F9ABAC76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03BA84A4-AB71-4C88-9517-10D7F9ABAC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03BA84A4-AB71-4C88-9517-10D7F9ABAC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03BA84A4-AB71-4C88-9517-10D7F9ABAC76}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E237FEBF-A329-4C8A-8168-41B44095923D}
+	EndGlobalSection
+EndGlobal
