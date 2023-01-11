@@ -134,14 +134,14 @@ namespace SteamStorage.ApplicationLogic
         }
         public static void DeleteGroupRemain(string title)
         {
-            db.RemainGroups.Load();
+            db.RemainGroups.LoadAsync();
             db.RemainGroups.Remove(db.RemainGroups.Local.Where(x => x.Title == title).First());
             db.SaveChanges();
         }
         public static void DeleteGroupRemainAndRemainElements(string title)
         {
-            db.RemainGroups.Load();
-            db.Remains.Load();
+            db.RemainGroups.LoadAsync();
+            db.Remains.LoadAsync();
             RemainGroups group = db.RemainGroups.Local.Where(x => x.Title == title).First();
             var remainsDel = db.Remains.Local.Where(x => x.Id_group == group.Id);
             foreach (var item in remainsDel)
@@ -154,9 +154,9 @@ namespace SteamStorage.ApplicationLogic
         }
         public static List<RemainElementFull> GetRemainElements(int? group_id)
         {
-            db.Remains.Load();
-            db.Skins.Load();
-            db.PriceDynamics.Load();
+            db.Remains.LoadAsync();
+            db.Skins.LoadAsync();
+            db.PriceDynamics.LoadAsync();
 
             var remains = db.Remains.Local;
             var skins = db.Skins.Local;
@@ -191,13 +191,13 @@ namespace SteamStorage.ApplicationLogic
         {
             try
             {
-                db.Skins.Load();
+                db.Skins.LoadAsync();
                 if (!db.Skins.Local.Where(x => x.Url == url).Any())
                 {
                     GeneralMethods.AddSkinInDB(url);
                 }
-                db.Skins.Load();
-                db.Remains.Load();
+                db.Skins.LoadAsync();
+                db.Remains.LoadAsync();
                 db.Remains.Add(new(db.Skins.Local.Where(x => x.Url == url).First().Id, CurrentGroupId is null ? 1 : (int)CurrentGroupId, date, cost, count));
                 db.SaveChanges();
                 return null;
@@ -212,9 +212,9 @@ namespace SteamStorage.ApplicationLogic
         {
             try
             {
-                db.Skins.Load();
-                db.RemainGroups.Load();
-                db.Remains.Load();
+                db.Skins.LoadAsync();
+                db.RemainGroups.LoadAsync();
+                db.Remains.LoadAsync();
                 RemainElement remainElement = db.Remains.Local.Where(x => x.Id == remain.Id).First();
                 if (!db.Skins.Local.Where(x => x.Url == url).Any())
                 {
@@ -237,16 +237,16 @@ namespace SteamStorage.ApplicationLogic
         }
         public static void DeleteRemainElement(RemainElementFull remain)
         {
-            db.Remains.Load();
+            db.Remains.LoadAsync();
             RemainElement remainElement = db.Remains.Local.Where(x => x.Id == remain.Id).First();
             db.Remains.Local.Remove(remainElement);
             db.SaveChanges();
         }
         public static Exception? UpdateInfo(List<RemainElementFull> remainElementFull)
         {
-            db.PriceDynamics.Load();
-            db.Skins.Load();
-            db.Remains.Load();
+            db.PriceDynamics.LoadAsync();
+            db.Skins.LoadAsync();
+            db.Remains.LoadAsync();
             try
             {
                 int count = remainElementFull.Count;
