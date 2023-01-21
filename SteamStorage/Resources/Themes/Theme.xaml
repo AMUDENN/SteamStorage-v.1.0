@@ -48,7 +48,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Style="{StaticResource BorderStyle}" Background="#CED2CD">
+                    <Border Style="{StaticResource BorderStyle}" Background="{StaticResource Light}">
                         <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Border>
                 </ControlTemplate>
