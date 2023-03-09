@@ -23,7 +23,7 @@ namespace SteamStorage.ControlElements
                 {
                     Messages.Information("Скин успешко добавлен");
                     DeleteThisElement();
-                    MainWindow.RemainsPageInstance.RefreshElements(RemainsMethods.CurrentGroupId);
+                    MainWindow.RemainsPageInstance.RefreshElements();
                 }
             }
             catch

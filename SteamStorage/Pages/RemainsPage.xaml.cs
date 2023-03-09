@@ -1,5 +1,6 @@
 ﻿using SteamStorage.ApplicationLogic;
 using SteamStorage.ControlElements;
+using SteamStorage.SteamStorageDB;
 using SteamStorageDB;
 using System;
 using System.Collections.Generic;
@@ -16,26 +17,26 @@ namespace SteamStorage.Pages
         readonly Style NowPressedButton = (Style)Application.Current.Resources["NowPressedButton"];
         readonly Style SeparatorStyle = (Style)Application.Current.Resources["SeparatorStyle"];
         readonly Style ProgressBarStyle = (Style)Application.Current.Resources["ProgressBarStyle"];
-        private ContextMenu ContextMenu;
+        private new readonly ContextMenu ContextMenu;
         public RemainsPage()
         {
             InitializeComponent();
             ContextMenu = MakeContextMenu();
-            RefreshElements(null);
+            RefreshElements();
             DisplayGroups();
         }
-        public void RefreshElements(int? group_id)
+        public void RefreshElements()
         {
-            List<RemainElementFull> remainElements = RemainsMethods.GetRemainElements(group_id);
+            List<AdvancedRemain> remainElements = RemainsMethods.GetRemainElements(RemainsMethods.CurrentGroup);
             RefreshRemainElements(remainElements);
-            string title = group_id is null ? "Все" : RemainsMethods.GetRemainGroups().Where(x => x.Id == group_id).First().Title;
+            string title = RemainsMethods.CurrentGroup is null ? "Все" : RemainsMethods.CurrentGroup.Title;
             ChangeGroupButtonsStyle(title);
             RefreshConclusion(remainElements);
         }
         public void DisplayGroups()
         {
             GroupStackPanel.Children.RemoveRange(1, GroupStackPanel.Children.Count - 1);
-            List<RemainGroups> groups = RemainsMethods.GetRemainGroups();
+            List<RemainGroup> groups = RemainsMethods.GetRemainGroups();
 
             foreach (var group in groups)
             {
@@ -108,7 +109,7 @@ namespace SteamStorage.Pages
             if (!Messages.ActionConfirmation($"Вы уверены, что хотите удалить группу: \"{btn.Content}\"?")) return;
             RemainsMethods.DeleteGroupRemain(btn.Content.ToString());
             DisplayGroups();
-            RefreshElements(null);
+            RefreshElements();
         }
         private void DeleteGroupAndRemainsClick(object sender, RoutedEventArgs e)
         {
@@ -117,19 +118,15 @@ namespace SteamStorage.Pages
             if (!Messages.ActionConfirmation($"Вы уверены, что хотите удалить группу: \"{btn.Content}\" и все скины, находящиеся в ней?")) return;
             RemainsMethods.DeleteGroupRemainAndRemainElements(btn.Content.ToString());
             DisplayGroups();
-            RefreshElements(null);
+            RefreshElements();
         }
         private void GetGroupElementsClick(object sender, RoutedEventArgs e)
         {
-            int? group_id = null;
-
             string content = ((Button)sender).Content.ToString();
 
-            if (content != "Все") group_id = RemainsMethods.GetRemainGroups().Where(x => x.Title == content).First().Id;
+            RemainsMethods.ChangeCurrentGroup(content);
 
-            RefreshElements(group_id);
-
-            RemainsMethods.ChangeCurrentGroupId(group_id);
+            RefreshElements();
         }
         private void ChangeGroupButtonsStyle(string content)
         {
@@ -142,10 +139,10 @@ namespace SteamStorage.Pages
         }
         private void OrderByClick(object sender, RoutedEventArgs e)
         {
-            List<RemainElementFull> remainElements = RemainsMethods.GetOrderedRemainElements(((Button)sender).Content.ToString());
+            List<AdvancedRemain> remainElements = RemainsMethods.GetOrderedRemainElements(((Button)sender).Content.ToString());
             RefreshRemainElements(remainElements);
         }
-        private void RefreshRemainElements(List<RemainElementFull> remainElements)
+        private void RefreshRemainElements(List<AdvancedRemain> remainElements)
         {
             MainStackPanel.Children.RemoveRange(1, MainStackPanel.Children.Count - 1);
             foreach (var item in remainElements)
@@ -155,7 +152,7 @@ namespace SteamStorage.Pages
                 MainStackPanel.Children.Add(skinElement);
             }
         }
-        public void RefreshConclusion(List<RemainElementFull> remainElements)
+        public void RefreshConclusion(List<AdvancedRemain> remainElements)
         {
             double totalAmount = remainElements.Select(x => x.Amount).Sum();
             double totalCount = remainElements.Select(x => x.Count).Sum();
@@ -211,7 +208,7 @@ namespace SteamStorage.Pages
             if (!RemainsMethods.BackgroundWorker.IsBusy)
             {
                 AddButtonAndProgressBar();
-                RemainsMethods.BackgroundWorker.RunWorkerAsync(RemainsMethods.CurrentGroupId);
+                RemainsMethods.BackgroundWorker.RunWorkerAsync(RemainsMethods.CurrentGroup);
             }
         }
         private void UpdateCancelClick(object sender, RoutedEventArgs e)
@@ -223,13 +220,13 @@ namespace SteamStorage.Pages
             UpdateUIElements.Children.RemoveRange(0, 2);
             UpdateUIElements.Children[0].Visibility = Visibility.Visible;
             UpdateUIElements.Children[1].Visibility = Visibility.Visible;
-            RefreshElements(RemainsMethods.CurrentGroupId);
+            RefreshElements();
         }
         private void ArchiveClick(object sender, RoutedEventArgs e)
         {
             GeneralMethods.ChangeCurrentPage(GeneralMethods.ApplicationPages.Archive);
             MainWindow.Instance.MainFrame.Content = MainWindow.ArchivePageInstance;
-            MainWindow.ArchivePageInstance.RefreshElements(ArchiveMethods.CurrentGroupId);
+            MainWindow.ArchivePageInstance.RefreshElements();
         }
     }
 }

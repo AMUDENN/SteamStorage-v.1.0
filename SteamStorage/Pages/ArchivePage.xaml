@@ -89,5 +89,6 @@
             </Grid.RowDefinitions>
             <Button Content="Остатки" Click="RemainsClick" Style="{DynamicResource MainButtonStyle}" Grid.Column="0" Grid.Row="2"/>
         </Grid>
+        <TextBlock x:Name="Version" Style="{DynamicResource TextBlockStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="2" Grid.Row="2"/>
     </Grid>
 </Page>

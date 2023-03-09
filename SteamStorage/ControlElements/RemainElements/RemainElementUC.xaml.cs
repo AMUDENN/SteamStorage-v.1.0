@@ -15,8 +15,8 @@ namespace SteamStorage.ControlElements
     public partial class RemainElementUC : UserControl
     {
         public PlotModel MyModel { get; private set; }
-        public RemainElementFull RemainElementFull { get; set; }
-        public RemainElementUC(RemainElementFull remainElementFull)
+        public AdvancedRemain RemainElementFull { get; set; }
+        public RemainElementUC(AdvancedRemain remainElementFull)
         {
             InitializeComponent();
             DataContext = this;
@@ -81,7 +81,7 @@ namespace SteamStorage.ControlElements
         {
             if (!Messages.ActionConfirmation($"Вы уверены, что хотите удалить скин {RemainElementFull.Title}?")) return;
             RemainsMethods.DeleteRemainElement(RemainElementFull);
-            MainWindow.RemainsPageInstance.RefreshElements(RemainsMethods.CurrentGroupId);
+            MainWindow.RemainsPageInstance.RefreshElements();
         }
         private void SellClick(object sender, RoutedEventArgs e)
         {

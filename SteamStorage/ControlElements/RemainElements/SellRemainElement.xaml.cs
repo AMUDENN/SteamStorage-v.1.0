@@ -1,4 +1,5 @@
 ﻿using SteamStorage.ApplicationLogic;
+using SteamStorage.SteamStorageDB;
 using SteamStorageDB;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace SteamStorage.ControlElements
 {
     public partial class SellRemainElement : UserControl
     {
-        public RemainElementFull RemainElementFull { get; set; }
-        public SellRemainElement(RemainElementFull remainElementFull)
+        public AdvancedRemain RemainElementFull { get; set; }
+        public SellRemainElement(AdvancedRemain remainElementFull)
         {
             InitializeComponent();
             RemainElementFull = remainElementFull;
@@ -22,8 +23,8 @@ namespace SteamStorage.ControlElements
 
         private void GroupsComboBoxInit()
         {
-            List<ArchiveGroups> Groups = ArchiveMethods.GetArchiveGroups();
-            foreach (ArchiveGroups item in Groups)
+            List<ArchiveGroup> Groups = ArchiveMethods.GetArchiveGroups();
+            foreach (ArchiveGroup item in Groups)
             {
                 ComboBoxItem comboBoxItem = new()
                 {
@@ -37,32 +38,36 @@ namespace SteamStorage.ControlElements
         {
             Title.Text = RemainElementFull.Title;
             Count.Text = "0";
-            Cost_purchase.Text = RemainElementFull.CostPurchase.ToString();
-            Cost_sold.Text = "0";
+            CostPurchase.Text = RemainElementFull.CostPurchase.ToString();
+            CostSold.Text = "0";
         }
         private void OkClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                string Url = GeneralMethods.GetSkin(RemainElementFull.Id_skin).Url;
+                string Url = GeneralMethods.GetSkin(RemainElementFull.IdSkin).Url;
                 int count = Math.Min(Convert.ToInt32(Count.Text), RemainElementFull.Count);
-                Exception ex = ArchiveMethods.AddNewArchiveElement(Url, count, Convert.ToDouble(Cost_purchase.Text.Replace('.', ',')),
-                    Convert.ToDouble(Cost_sold.Text.Replace('.', ',')), RemainElementFull.DatePurchase, DateTime.Now,
-                    ArchiveMethods.GetArchiveGroups().Where(x => x.Title == ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString()).First().Id);
+                Exception ex = ArchiveMethods.AddNewArchiveElement(Url, count, 
+                    Convert.ToDouble(CostPurchase.Text.Replace('.', ',')),
+                    Convert.ToDouble(CostSold.Text.Replace('.', ',')),
+                    RemainElementFull.DatePurchase, 
+                    DateTime.Now,
+                    (int)ArchiveMethods.GetArchiveGroups().Where(x => x.Title == ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString()).First().Id);
                 if (count == RemainElementFull.Count)
                 {
                     RemainsMethods.DeleteRemainElement(RemainElementFull);
                 }
                 else
                 {
-                    RemainsMethods.ChangeRemainElement(RemainElementFull, Url, RemainElementFull.Count - count, RemainElementFull.CostPurchase, RemainElementFull.DatePurchase,
-                        RemainsMethods.GetRemainGroups().Where(x => x.Id == RemainsMethods.CurrentGroupId).First().Title);
+                    RemainsMethods.ChangeRemainElement(RemainElementFull, Url, RemainElementFull.Count - count, RemainElementFull.CostPurchase,
+                        RemainElementFull.DatePurchase,
+                        RemainsMethods.CurrentGroup.Title);
                 }
                 if (ex != null) Messages.Error(ex.Message);
                 else
                 {
                     Messages.Information("Скин успешко перемещён в архив");
-                    MainWindow.RemainsPageInstance.RefreshElements(RemainsMethods.CurrentGroupId);
+                    MainWindow.RemainsPageInstance.RefreshElements();
                 }
             }
             catch
@@ -72,7 +77,7 @@ namespace SteamStorage.ControlElements
         }
         private void CancelClick(object sender, RoutedEventArgs e)
         {
-            MainWindow.RemainsPageInstance.RefreshElements(RemainsMethods.CurrentGroupId);
+            MainWindow.RemainsPageInstance.RefreshElements();
         }
         private void IntPreviewTextInput(object sender, TextCompositionEventArgs e)
         {

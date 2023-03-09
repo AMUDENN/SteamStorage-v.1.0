@@ -7,6 +7,6 @@
         mc:Ignorable="d" 
         Style="{DynamicResource WindowStyle}"
         Icon="../Resources/Images/Icon.ico"
-        Title="Steam Storage" Height="540" Width="960" MinHeight="540" MinWidth="960">
-    <Frame x:Name="MainFrame" Background="White" NavigationUIVisibility="Hidden" Grid.Row="1"/>
+        Title="Steam Storage" Height="630" Width="1120" MinHeight="540" MinWidth="960">
+    <Frame x:Name="MainFrame" Background="White" NavigationUIVisibility="Hidden"/>
 </Window>

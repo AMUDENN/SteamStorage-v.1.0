@@ -1,6 +1,6 @@
 ﻿using SteamStorage.ApplicationLogic;
 using SteamStorage.ControlElements;
-using SteamStorageDB;
+using SteamStorage.SteamStorageDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,26 +15,26 @@ namespace SteamStorage.Pages
         readonly Style MainButtonStyle = (Style)Application.Current.Resources["MainButtonStyle"];
         readonly Style NowPressedButton = (Style)Application.Current.Resources["NowPressedButton"];
         readonly Style SeparatorStyle = (Style)Application.Current.Resources["SeparatorStyle"];
-        private ContextMenu ContextMenu;
+        private new readonly ContextMenu ContextMenu;
         public ArchivePage()
         {
             InitializeComponent();
             ContextMenu = MakeContextMenu();
-            RefreshElements(null);
+            RefreshElements();
             DisplayGroups();
         }
-        public void RefreshElements(int? group_id)
+        public void RefreshElements()
         {
-            List<ArchiveElementFull> archiveElements = ArchiveMethods.GetArchiveElements(group_id);
+            List<AdvancedArchive> archiveElements = ArchiveMethods.GetArchiveElements(ArchiveMethods.CurrentGroup);
             RefreshArchiveElements(archiveElements);
-            string title = group_id is null ? "Все" : ArchiveMethods.GetArchiveGroups().Where(x => x.Id == group_id).First().Title;
+            string title = ArchiveMethods.CurrentGroup is null ? "Все" : ArchiveMethods.CurrentGroup.Title;
             ChangeGroupButtonsStyle(title);
             RefreshConclusion(archiveElements);
         }
         public void DisplayGroups()
         {
             GroupStackPanel.Children.RemoveRange(1, GroupStackPanel.Children.Count - 1);
-            List<ArchiveGroups> groups = ArchiveMethods.GetArchiveGroups();
+            List<ArchiveGroup> groups = ArchiveMethods.GetArchiveGroups();
 
             foreach (var group in groups)
             {
@@ -107,7 +107,7 @@ namespace SteamStorage.Pages
             if (!Messages.ActionConfirmation($"Вы уверены, что хотите удалить группу: \"{btn.Content}\"?")) return;
             ArchiveMethods.DeleteGroupArchive(btn.Content.ToString());
             DisplayGroups();
-            RefreshElements(null);
+            RefreshElements();
         }
         private void DeleteGroupAndArchiveClick(object sender, RoutedEventArgs e)
         {
@@ -116,17 +116,15 @@ namespace SteamStorage.Pages
             if (!Messages.ActionConfirmation($"Вы уверены, что хотите удалить группу: \"{btn.Content}\" и все скины, находящиеся в ней?")) return;
             ArchiveMethods.DeleteGroupArchiveAndArchiveElements(btn.Content.ToString());
             DisplayGroups();
-            RefreshElements(null);
+            RefreshElements();
         }
         private void GetGroupElementsClick(object sender, RoutedEventArgs e)
         {
-            int? group_id = null;
+            string content = ((Button)sender).Content.ToString();
 
-            if (((Button)sender).Content.ToString() != "Все") group_id = ArchiveMethods.GetArchiveGroups().Where(x => x.Title == ((Button)sender).Content.ToString()).First().Id;
+            ArchiveMethods.ChangeCurrentGroupId(content);
 
-            RefreshElements(group_id);
-
-            ArchiveMethods.ChangeCurrentGroupId(group_id);
+            RefreshElements();
         }
         private void ChangeGroupButtonsStyle(string content)
         {
@@ -140,19 +138,19 @@ namespace SteamStorage.Pages
         }
         private void OrderByClick(object sender, RoutedEventArgs e)
         {
-            List<ArchiveElementFull> archiveElements = ArchiveMethods.GetOrderedArchiveElements(((Button)sender).Content.ToString());
+            List<AdvancedArchive> archiveElements = ArchiveMethods.GetOrderedArchiveElements(((Button)sender).Content.ToString());
             RefreshArchiveElements(archiveElements);
         }
-        private void RefreshArchiveElements(List<ArchiveElementFull> archiveElements)
+        private void RefreshArchiveElements(List<AdvancedArchive> archiveElements)
         {
             MainStackPanel.Children.RemoveRange(1, MainStackPanel.Children.Count - 1);
             foreach (var item in archiveElements)
             {
-               ArchiveElementUC skinElement = new(item);
-               MainStackPanel.Children.Add(skinElement);
+                ArchiveElementUC skinElement = new(item);
+                MainStackPanel.Children.Add(skinElement);
             }
         }
-        public void RefreshConclusion(List<ArchiveElementFull> archiveElements)
+        public void RefreshConclusion(List<AdvancedArchive> archiveElements)
         {
             double totalAmount = archiveElements.Select(x => x.Amount).Sum();
             double totalCount = archiveElements.Select(x => x.Count).Sum();
@@ -174,7 +172,7 @@ namespace SteamStorage.Pages
         {
             GeneralMethods.ChangeCurrentPage(GeneralMethods.ApplicationPages.Remains);
             MainWindow.Instance.MainFrame.Content = MainWindow.RemainsPageInstance;
-            MainWindow.RemainsPageInstance.RefreshElements(RemainsMethods.CurrentGroupId);
+            MainWindow.RemainsPageInstance.RefreshElements();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using SteamStorage.ApplicationLogic;
-using SteamStorage.Pages;
 using System;
 using System.Windows;
 using System.Windows.Controls;

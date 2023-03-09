@@ -17,13 +17,13 @@ namespace SteamStorage.ControlElements
         {
             try
             {
-                Exception ex = ArchiveMethods.AddNewArchiveElement(Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(Cost_purchase.Text.Replace('.', ',')),
-                    Convert.ToDouble(Cost_sold.Text.Replace('.', ',')), DateTime.Now, DateTime.Now);
+                Exception ex = ArchiveMethods.AddNewArchiveElement(Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(CostPurchase.Text.Replace('.', ',')),
+                    Convert.ToDouble(CostSold.Text.Replace('.', ',')), DateTime.Now, DateTime.Now);
                 if (ex != null) Messages.Error(ex.Message);
                 else
                 {
                     Messages.Information("Скин успешко добавлен");
-                    MainWindow.ArchivePageInstance.RefreshElements(ArchiveMethods.CurrentGroupId);
+                    MainWindow.ArchivePageInstance.RefreshElements();
                 }
             }
             catch

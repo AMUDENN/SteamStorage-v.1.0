@@ -29,7 +29,11 @@ namespace Parser
         private static string DeleteExtraChar(string title)
         {
             string result = "";
-            foreach (string item in extraChars) result = title.Replace(item, "");
+            foreach (string item in extraChars)
+            {
+                result = title.Replace(item, "");
+                title = result;
+            }
             return result;
         }
     }

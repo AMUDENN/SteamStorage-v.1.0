@@ -1,5 +1,6 @@
 ﻿using SteamStorage.ApplicationLogic;
 using SteamStorage.Pages;
+using SteamStorage.SteamStorageDB;
 using SteamStorageDB;
 using System;
 using System.Collections.Generic;
@@ -12,20 +13,20 @@ namespace SteamStorage.ControlElements
 {
     public partial class ChangeRemainElement : UserControl
     {
-        readonly RemainElementFull RemainElementFull;
+        readonly AdvancedRemain RemainElementFull;
         public int IdGroup { get; set; }
-        public ChangeRemainElement(RemainElementFull remainElementFull)
+        public ChangeRemainElement(AdvancedRemain remainElementFull)
         {
             InitializeComponent();
             RemainElementFull = remainElementFull;
-            IdGroup = (int)(RemainsMethods.CurrentGroupId is null ? 1 : RemainsMethods.CurrentGroupId);
+            IdGroup = (int)(RemainsMethods.CurrentGroup is null ? 1 : RemainsMethods.CurrentGroup.Id);
             GroupsComboBoxInit();
             TextBoxesInit();
         }
         private void GroupsComboBoxInit()
         {
-            List<RemainGroups> Groups = RemainsMethods.GetRemainGroups();
-            foreach (RemainGroups item in Groups)
+            List<RemainGroup> Groups = RemainsMethods.GetRemainGroups();
+            foreach (RemainGroup item in Groups)
             {
                 ComboBoxItem comboBoxItem = new();
                 comboBoxItem.Content = item.Title;
@@ -35,7 +36,7 @@ namespace SteamStorage.ControlElements
         }
         private void TextBoxesInit()
         {
-            Url.Text = GeneralMethods.GetSkin(RemainElementFull.Id_skin).Url;
+            Url.Text = GeneralMethods.GetSkin(RemainElementFull.IdSkin).Url;
             Count.Text = RemainElementFull.Count.ToString();
             Cost.Text = RemainElementFull.CostPurchase.ToString();
         }
@@ -43,12 +44,13 @@ namespace SteamStorage.ControlElements
         {
             try
             {
-                Exception ex = RemainsMethods.ChangeRemainElement(RemainElementFull, Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(Cost.Text.Replace('.', ',')), RemainElementFull.DatePurchase, ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString());
+                Exception ex = RemainsMethods.ChangeRemainElement(RemainElementFull, Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(Cost.Text.Replace('.', ',')), 
+                    RemainElementFull.DatePurchase, ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString());
                 if (ex != null) Messages.Error(ex.Message);
                 else
                 {
                     Messages.Information("Скин успешко изменён");
-                    MainWindow.RemainsPageInstance.RefreshElements(RemainsMethods.CurrentGroupId);
+                    MainWindow.RemainsPageInstance.RefreshElements();
                 }
             }
             catch
@@ -58,7 +60,7 @@ namespace SteamStorage.ControlElements
         }
         private void CancelClick(object sender, RoutedEventArgs e)
         {
-            MainWindow.RemainsPageInstance.RefreshElements(RemainsMethods.CurrentGroupId);
+            MainWindow.RemainsPageInstance.RefreshElements();
         }
         private void IntPreviewTextInput(object sender, TextCompositionEventArgs e)
         {

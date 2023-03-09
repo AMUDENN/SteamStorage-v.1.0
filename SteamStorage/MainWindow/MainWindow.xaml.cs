@@ -1,8 +1,7 @@
-﻿using System.Windows;
-using System.ComponentModel;
+﻿using SteamStorage.ApplicationLogic;
 using SteamStorage.Pages;
-using SteamStorage.ApplicationLogic;
-
+using System.ComponentModel;
+using System.Windows;
 
 namespace SteamStorage
 {
@@ -18,6 +17,8 @@ namespace SteamStorage
             Instance = this;
             RemainsPageInstance = new RemainsPage();
             ArchivePageInstance = new ArchivePage();
+            RemainsPageInstance.Version.Text = Constants.Version;
+            ArchivePageInstance.Version.Text = Constants.Version;
             MainFrame.Content = RemainsPageInstance;
             MaxHeight = System.Windows.SystemParameters.PrimaryScreenHeight - 26;
         }

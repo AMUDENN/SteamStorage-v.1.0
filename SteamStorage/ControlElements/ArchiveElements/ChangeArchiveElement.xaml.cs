@@ -1,5 +1,5 @@
 ﻿using SteamStorage.ApplicationLogic;
-using SteamStorageDB;
+using SteamStorage.SteamStorageDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +12,20 @@ namespace SteamStorage.ControlElements
 
     public partial class ChangeArchiveElement : UserControl
     {
-        readonly ArchiveElementFull ArchiveElementFull;
+        readonly AdvancedArchive ArchiveElementFull;
         public int IdGroup { get; set; }
-        public ChangeArchiveElement(ArchiveElementFull archiveElementFull)
+        public ChangeArchiveElement(AdvancedArchive archiveElementFull)
         {
             InitializeComponent();
             ArchiveElementFull = archiveElementFull;
-            IdGroup = (int)(ArchiveMethods.CurrentGroupId is null ? 1 : ArchiveMethods.CurrentGroupId);
+            IdGroup = (int)(ArchiveMethods.CurrentGroup is null ? 1 : ArchiveMethods.CurrentGroup.Id);
             GroupsComboBoxInit();
             TextBoxesInit();
         }
         private void GroupsComboBoxInit()
         {
-            List<ArchiveGroups> Groups = ArchiveMethods.GetArchiveGroups();
-            foreach (ArchiveGroups item in Groups)
+            List<ArchiveGroup> Groups = ArchiveMethods.GetArchiveGroups();
+            foreach (ArchiveGroup item in Groups)
             {
                 ComboBoxItem comboBoxItem = new();
                 comboBoxItem.Content = item.Title;
@@ -35,22 +35,22 @@ namespace SteamStorage.ControlElements
         }
         private void TextBoxesInit()
         {
-            Url.Text = GeneralMethods.GetSkin(ArchiveElementFull.Id_skin).Url;
+            Url.Text = GeneralMethods.GetSkin(ArchiveElementFull.IdSkin).Url;
             Count.Text = ArchiveElementFull.Count.ToString();
-            Cost_purchase.Text = ArchiveElementFull.CostPurchase.ToString();
-            Cost_sold.Text = ArchiveElementFull.CostSold.ToString();
+            CostPurchase.Text = ArchiveElementFull.CostPurchase.ToString();
+            CostSold.Text = ArchiveElementFull.CostSold.ToString();
         }
         private void OkClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                Exception ex = ArchiveMethods.ChangeArchiveElement(ArchiveElementFull, Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(Cost_purchase.Text.Replace('.', ',')),
-                    Convert.ToDouble(Cost_sold.Text.Replace('.', ',')), ArchiveElementFull.DatePurchase, ArchiveElementFull.DateSold, ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString());
+                Exception ex = ArchiveMethods.ChangeArchiveElement(ArchiveElementFull, Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(CostPurchase.Text.Replace('.', ',')),
+                    Convert.ToDouble(CostSold.Text.Replace('.', ',')), ArchiveElementFull.DatePurchase, ArchiveElementFull.DateSold, ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString());
                 if (ex != null) Messages.Error(ex.Message);
                 else
                 {
                     Messages.Information("Скин успешко изменён");
-                    MainWindow.ArchivePageInstance.RefreshElements(ArchiveMethods.CurrentGroupId);
+                    MainWindow.ArchivePageInstance.RefreshElements();
                 }
             }
             catch
@@ -60,7 +60,7 @@ namespace SteamStorage.ControlElements
         }
         private void CancelClick(object sender, RoutedEventArgs e)
         {
-            MainWindow.ArchivePageInstance.RefreshElements(ArchiveMethods.CurrentGroupId);
+            MainWindow.ArchivePageInstance.RefreshElements();
         }
         private void IntPreviewTextInput(object sender, TextCompositionEventArgs e)
         {

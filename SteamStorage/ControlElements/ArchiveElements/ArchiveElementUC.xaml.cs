@@ -6,8 +6,8 @@ namespace SteamStorage.ControlElements
 {
     public partial class ArchiveElementUC : UserControl
     {
-        public ArchiveElementFull ArchiveElementFull { get; set; }
-        public ArchiveElementUC(ArchiveElementFull archiveElementFull)
+        public AdvancedArchive ArchiveElementFull { get; set; }
+        public ArchiveElementUC(AdvancedArchive archiveElementFull)
         {
             InitializeComponent();
             DataContext = this;
@@ -24,7 +24,7 @@ namespace SteamStorage.ControlElements
         {
             if (!Messages.ActionConfirmation($"Вы уверены, что хотите удалить скин {ArchiveElementFull.Title}?")) return;
             ArchiveMethods.DeleteArchiveElement(ArchiveElementFull);
-            MainWindow.ArchivePageInstance.RefreshElements(ArchiveMethods.CurrentGroupId);
+            MainWindow.ArchivePageInstance.RefreshElements();
         }
     }
 }
