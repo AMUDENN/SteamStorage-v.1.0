@@ -15,7 +15,7 @@ namespace SteamStorage.ControlElements
         }
         private void ChangeClick(object sender, RoutedEventArgs e)
         {
-            var childrens = MainWindow.ArchivePageInstance.MainStackPanel.Children;
+            var childrens = MainWindow.ArchivePageInstance.ElementsStackPanel.Children;
             int index = childrens.IndexOf(this);
             childrens.Remove(this);
             childrens.Insert(index, new ChangeArchiveElement(ArchiveElementFull));

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Parser;
 using SteamStorage.SteamStorageDB;
-using SteamStorageDB;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

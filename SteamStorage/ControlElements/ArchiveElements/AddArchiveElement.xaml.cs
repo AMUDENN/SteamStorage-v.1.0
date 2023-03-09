@@ -23,6 +23,7 @@ namespace SteamStorage.ControlElements
                 else
                 {
                     Messages.Information("Скин успешко добавлен");
+                    DeleteThisElement();
                     MainWindow.ArchivePageInstance.RefreshElements();
                 }
             }
@@ -31,10 +32,14 @@ namespace SteamStorage.ControlElements
                 Messages.Error("Введите корректные данные");
             }
         }
-        private void CancelClick(object sender, RoutedEventArgs e)
+        private void DeleteThisElement()
         {
             MainWindow.ArchivePageInstance.MainStackPanel.Children.Remove(this);
             MainWindow.ArchivePageInstance.MainStackPanel.Children[0].Visibility = Visibility.Visible;
+        }
+        private void CancelClick(object sender, RoutedEventArgs e)
+        {
+            DeleteThisElement();
         }
         private void IntPreviewTextInput(object sender, TextCompositionEventArgs e)
         {

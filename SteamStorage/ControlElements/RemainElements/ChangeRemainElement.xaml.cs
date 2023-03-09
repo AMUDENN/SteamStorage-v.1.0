@@ -1,7 +1,5 @@
 ﻿using SteamStorage.ApplicationLogic;
-using SteamStorage.Pages;
 using SteamStorage.SteamStorageDB;
-using SteamStorageDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +42,7 @@ namespace SteamStorage.ControlElements
         {
             try
             {
-                Exception ex = RemainsMethods.ChangeRemainElement(RemainElementFull, Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(Cost.Text.Replace('.', ',')), 
+                Exception ex = RemainsMethods.ChangeRemainElement(RemainElementFull, Url.Text, Convert.ToInt32(Count.Text), Convert.ToDouble(Cost.Text.Replace('.', ',')),
                     RemainElementFull.DatePurchase, ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString());
                 if (ex != null) Messages.Error(ex.Message);
                 else

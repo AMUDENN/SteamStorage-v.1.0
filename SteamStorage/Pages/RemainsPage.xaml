@@ -56,10 +56,9 @@
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1" Margin="5">
             <ScrollViewer FlowDirection="LeftToRight" VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <StackPanel x:Name="MainStackPanel" Orientation="Vertical" Margin="1">
-                        <Button Content="Добавить скин в эту группу" Click="AddNewRemainElementClick" Style="{DynamicResource MainButtonStyle}" Height="50"/>
-                    </StackPanel>
+                <StackPanel x:Name="MainStackPanel">
+                    <Button Content="Добавить скин в эту группу" Click="AddNewRemainElementClick" Style="{DynamicResource MainButtonStyle}" Height="50"/>
+                    <StackPanel x:Name="ElementsStackPanel" Orientation="Vertical" Margin="1"/>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

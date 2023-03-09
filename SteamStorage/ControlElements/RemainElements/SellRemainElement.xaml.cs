@@ -1,6 +1,5 @@
 ﻿using SteamStorage.ApplicationLogic;
 using SteamStorage.SteamStorageDB;
-using SteamStorageDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,10 +46,10 @@ namespace SteamStorage.ControlElements
             {
                 string Url = GeneralMethods.GetSkin(RemainElementFull.IdSkin).Url;
                 int count = Math.Min(Convert.ToInt32(Count.Text), RemainElementFull.Count);
-                Exception ex = ArchiveMethods.AddNewArchiveElement(Url, count, 
+                Exception ex = ArchiveMethods.AddNewArchiveElement(Url, count,
                     Convert.ToDouble(CostPurchase.Text.Replace('.', ',')),
                     Convert.ToDouble(CostSold.Text.Replace('.', ',')),
-                    RemainElementFull.DatePurchase, 
+                    RemainElementFull.DatePurchase,
                     DateTime.Now,
                     (int)ArchiveMethods.GetArchiveGroups().Where(x => x.Title == ((ComboBoxItem)GroupsComboBox.SelectedItem).Content.ToString()).First().Id);
                 if (count == RemainElementFull.Count)

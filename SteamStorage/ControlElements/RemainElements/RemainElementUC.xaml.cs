@@ -72,7 +72,7 @@ namespace SteamStorage.ControlElements
         }
         private void ChangeClick(object sender, RoutedEventArgs e)
         {
-            var childrens = MainWindow.RemainsPageInstance.MainStackPanel.Children;
+            var childrens = MainWindow.RemainsPageInstance.ElementsStackPanel.Children;
             int index = childrens.IndexOf(this);
             childrens.Remove(this);
             childrens.Insert(index, new ChangeRemainElement(RemainElementFull));
@@ -85,7 +85,7 @@ namespace SteamStorage.ControlElements
         }
         private void SellClick(object sender, RoutedEventArgs e)
         {
-            var childrens = MainWindow.RemainsPageInstance.MainStackPanel.Children;
+            var childrens = MainWindow.RemainsPageInstance.ElementsStackPanel.Children;
             int index = childrens.IndexOf(this);
             childrens.Remove(this);
             childrens.Insert(index, new SellRemainElement(RemainElementFull));

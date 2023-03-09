@@ -143,11 +143,11 @@ namespace SteamStorage.Pages
         }
         private void RefreshArchiveElements(List<AdvancedArchive> archiveElements)
         {
-            MainStackPanel.Children.RemoveRange(1, MainStackPanel.Children.Count - 1);
+            ElementsStackPanel.Children.Clear();
             foreach (var item in archiveElements)
             {
                 ArchiveElementUC skinElement = new(item);
-                MainStackPanel.Children.Add(skinElement);
+                ElementsStackPanel.Children.Add(skinElement);
             }
         }
         public void RefreshConclusion(List<AdvancedArchive> archiveElements)

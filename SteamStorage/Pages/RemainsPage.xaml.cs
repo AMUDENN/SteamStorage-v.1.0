@@ -1,7 +1,6 @@
 ﻿using SteamStorage.ApplicationLogic;
 using SteamStorage.ControlElements;
 using SteamStorage.SteamStorageDB;
-using SteamStorageDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -144,12 +143,12 @@ namespace SteamStorage.Pages
         }
         private void RefreshRemainElements(List<AdvancedRemain> remainElements)
         {
-            MainStackPanel.Children.RemoveRange(1, MainStackPanel.Children.Count - 1);
+            ElementsStackPanel.Children.Clear();
             foreach (var item in remainElements)
             {
                 RemainElementUC skinElement = new(item);
                 skinElement.Height = 110;
-                MainStackPanel.Children.Add(skinElement);
+                ElementsStackPanel.Children.Add(skinElement);
             }
         }
         public void RefreshConclusion(List<AdvancedRemain> remainElements)
