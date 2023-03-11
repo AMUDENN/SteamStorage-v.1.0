@@ -92,7 +92,7 @@ namespace SteamStorage.ApplicationLogic
             RemainsIsDesc[parameter] = !RemainsIsDesc[parameter];
             return remains.ToList();
         }
-        public static Exception? AddNewRemainElement(string url, int count, double cost, DateTime date)
+        public static Exception? AddNewRemainElement(string url, long count, double cost, DateTime date)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace SteamStorage.ApplicationLogic
                 return new Exception("Неверно указана ссылка!");
             }
         }
-        public static Exception? ChangeRemainElement(AdvancedRemain remain, string url, int count, double cost, DateTime date, string group_title)
+        public static Exception? ChangeRemainElement(AdvancedRemain remain, string url, long count, double cost, DateTime date, string group_title)
         {
             try
             {

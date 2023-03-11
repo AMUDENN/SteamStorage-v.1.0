@@ -78,7 +78,7 @@ namespace SteamStorage.ApplicationLogic
             ArchiveIsDesc[parameter] = !ArchiveIsDesc[parameter];
             return archive.ToList();
         }
-        public static Exception? AddNewArchiveElement(string url, int count, double cost_purchase, double cost_sold, DateTime date_purchase, DateTime date_sold, int group_id = -1)
+        public static Exception? AddNewArchiveElement(string url, long count, double cost_purchase, double cost_sold, DateTime date_purchase, DateTime date_sold, int group_id = -1)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace SteamStorage.ApplicationLogic
                 return new Exception("Неверно указана ссылка!");
             }
         }
-        public static Exception? ChangeArchiveElement(AdvancedArchive archive, string url, int count, double cost_purchase, double cost_sold, DateTime date_purchase, DateTime date_sold, string group_title)
+        public static Exception? ChangeArchiveElement(AdvancedArchive archive, string url, long count, double cost_purchase, double cost_sold, DateTime date_purchase, DateTime date_sold, string group_title)
         {
             try
             {

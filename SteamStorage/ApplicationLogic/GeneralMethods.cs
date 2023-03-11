@@ -88,7 +88,7 @@ namespace SteamStorage.ApplicationLogic
             db.Skins.Add(skin);
             db.SaveChanges();
         }
-        public static Skin? GetSkin(int id)
+        public static Skin? GetSkin(long id)
         {
             db.Skins.Load();
             Skin? skin = db.Skins.Local.Where(x => x.Id == id).First();
