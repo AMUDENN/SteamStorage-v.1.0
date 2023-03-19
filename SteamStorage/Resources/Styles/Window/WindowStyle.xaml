@@ -23,7 +23,7 @@
                         <Border.Effect>
                             <DropShadowEffect Color="Black" Opacity="0.4" BlurRadius="10" ShadowDepth="0" Direction="0"/>
                         </Border.Effect>
-                        <Border x:Name="PART_Border" Style="{DynamicResource BorderStyle}">
+                        <Border x:Name="PART_Border" Style="{DynamicResource BorderRightAngleStyle}">
                             <Grid x:Name="PART_Content">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="36"/>
