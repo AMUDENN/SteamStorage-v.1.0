@@ -25,6 +25,9 @@ namespace SteamStorage
             double width = SystemParameters.PrimaryScreenWidth / 1.75;
             Height = height > 630 ? 630 : height;
             Width = width > 1120 ? 1120 : width;
+
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
         }
         private void ShowCloseMessage(object sender, CancelEventArgs e)
         {
