@@ -17,8 +17,17 @@ namespace Parser
         {
             string result = client.GetStringAsync($"https://steamcommunity.com/market/priceoverview/?market_hash_name={url[(url.LastIndexOf('/') + 1)..]}&appid=730&currency=5").Result;
             SkinParse skinParse = JsonConvert.DeserializeObject<SkinParse>(result);
-            if (skinParse == null) return (DateTime.Now, -1);
-            return (DateTime.Now, Convert.ToDouble(skinParse.lowest_price[..^4]));
+
+            double price = -1;
+            try
+            {
+                price = Convert.ToDouble(skinParse.lowest_price[..^4]);
+            }
+            catch
+            {
+                return (DateTime.Now, -1);
+            }
+            return (DateTime.Now, price);
         }
         public static async Task<string> GetTitle(string url)
         {
